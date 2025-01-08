@@ -96,3 +96,15 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.private.id
 }
+
+resource "aws_ec2_managed_prefix_list" "Main" {
+  name        = "Main-prefix-list"
+  address_family = "IPv4"
+  max_entries   = 10
+}
+
+resource "aws_ec2_managed_prefix_list_entry" "Main" {
+  cidr           = "103.149.154.118/32"
+  description    = "Primary"
+  prefix_list_id = aws_ec2_managed_prefix_list.Main.id
+}
