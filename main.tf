@@ -23,6 +23,17 @@ resource "aws_subnet" "public" {
   }
 }
 
+# Public Subnet
+resource "aws_subnet" "public2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.3.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "ap-south-1b"
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
 # Private Subnet
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
@@ -56,9 +67,17 @@ resource "aws_route" "public" {
   gateway_id             = aws_internet_gateway.igw.id
 }
 
+
+
 # Associate Public Subnet with Public Route Table
 resource "aws_route_table_association" "public" {
   subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
+}
+
+# Associate Public Subnet with Public Route Table
+resource "aws_route_table_association" "public2" {
+  subnet_id      = aws_subnet.public2.id
   route_table_id = aws_route_table.public.id
 }
 
