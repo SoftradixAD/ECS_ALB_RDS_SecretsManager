@@ -7,14 +7,14 @@ on:
 
 jobs:
   Valiate:
-  runs_on: ubuntu-latest
+    runs_on: ubuntu-latest
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Terraform initialization
-      runs: terraform init
+      - name: Terraform initialization
+        runs: terraform init
 
-    - name: Validate
-      runs: terraform validate
+      - name: Validate
+        runs: terraform validate
