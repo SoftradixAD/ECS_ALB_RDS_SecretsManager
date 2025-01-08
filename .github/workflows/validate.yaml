@@ -6,8 +6,8 @@ on:
       master
 
 jobs:
-  Valiate:
-    runs_on: ubuntu-latest
+  validate:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
