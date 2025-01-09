@@ -12,22 +12,15 @@ resource "aws_security_group" "ecs_sg" {
   ingress {
     cidr_blocks = ["10.0.0.0/16"]
     from_port   = 0
-    to_port     = 65535
+    to_port     = 0
     protocol    = "tcp"
   }
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = 0
-    to_port     = 65535
+    to_port     = 0
     protocol    = "tcp"
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
   }
 
   # ingress {
@@ -95,21 +88,22 @@ resource "aws_ecs_service" "main" {
   name            = "main-ecs-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.main.arn
-  desired_count   = 1
+  desired_count   = 2
   launch_type     = "FARGATE"
+  
   network_configuration {
     subnets          = [aws_subnet.private.id]
     security_groups = [aws_security_group.ecs_sg.id]
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.main.arn
-    container_name   = "main-container"
-    container_port   = 80
-  }
+  # load_balancer {
+  #   target_group_arn = aws_lb_target_group.main.arn
+  #   container_name   = "main-container"
+  #   container_port   = 80
+  # }
 
   health_check_grace_period_seconds = 60
 
-  depends_on = [aws_lb.main]  # Ensure ALB is created before ECS service
+  # depends_on = [aws_lb.main]  # Ensure ALB is created before ECS service
 }
