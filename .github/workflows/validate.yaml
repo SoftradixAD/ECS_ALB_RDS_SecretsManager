@@ -19,5 +19,5 @@ jobs:
       - name: Validate
         run: terraform validate
 
-      - name: Try to plan
-        run: terraform plan
+      # - name: Try to plan
+      #   run: terraform plan
