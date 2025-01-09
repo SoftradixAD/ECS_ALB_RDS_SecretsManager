@@ -4,13 +4,13 @@ resource "aws_lb_target_group" "main" {
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 
-    target_type = "ip"
+  target_type = "ip"
 
   health_check {
-    path                = "/"
+    path                = "/index.html"
     interval            = 30
     timeout             = 5
-    healthy_threshold   = 3
+    healthy_threshold   = 2
     unhealthy_threshold = 3
   }
 

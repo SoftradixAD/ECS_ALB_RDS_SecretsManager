@@ -18,11 +18,25 @@ resource "aws_security_group" "ecs_sg" {
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+  }
+
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
+
+  # ingress {
+  #   cidr_blocks = ["0.0.0.0/0"]
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   security_groups = [aws_security_group.alb_sg.id]
+  # }
 }
 
 # IAM Role for ECS Tasks
@@ -94,6 +108,8 @@ resource "aws_ecs_service" "main" {
     container_name   = "main-container"
     container_port   = 80
   }
+
+  health_check_grace_period_seconds = 60
 
   depends_on = [aws_lb.main]  # Ensure ALB is created before ECS service
 }
